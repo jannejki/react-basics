@@ -24,7 +24,10 @@ class Game extends React.Component {
 
     this.superSquare = _raffleSuperSquare();
 
-    if (_calculateWinner(squares) || squares[i]) return;
+    if (_calculateWinner(squares) || squares[i]) {
+      this.superSquare = false;
+      return;
+    }
 
     squares[i] = current.xIsNext ? "X" : "O";
     this.setState({
