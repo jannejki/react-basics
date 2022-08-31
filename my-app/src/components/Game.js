@@ -9,15 +9,15 @@ class Game extends React.Component {
       history: [
         {
           squares: [
-            [''],
-            [''],
-            [''],
-            [''],
-            [''],
-            [''],
-            [''],
-            [''],
-            ['']
+            { value: '', class: '' },
+            { value: '', class: '' },
+            { value: '', class: '' },
+            { value: '', class: '' },
+            { value: '', class: '' },
+            { value: '', class: '' },
+            { value: '', class: '' },
+            { value: '', class: '' },
+            { value: '', class: '' }
           ],
           xIsNext: true
         }
@@ -40,7 +40,7 @@ class Game extends React.Component {
     }
 
 
-    squares[i][0] = current.xIsNext ? 'X' : 'O';
+    squares[i].value = current.xIsNext ? 'X' : 'O';
 
     const nextInLine = [{
       squares: squares,
@@ -83,7 +83,7 @@ class Game extends React.Component {
       status = 'Winner: ' + winner.player;
 
       for (let i of winner.winningRow) {
-        current.squares[i][1] = 'winner';
+        current.squares[i].class = 'winner';
       }
 
     } else if (this.state.stepNumber < 9) {
@@ -128,8 +128,8 @@ const _calculateWinner = (squares) => {
   ];
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
-    if (squares[a][0] && squares[a][0] === squares[b][0] && squares[a][0] === squares[c][0]) {
-      return { player: squares[a][0], winningRow: lines[i] };
+    if (squares[a].value && squares[a].value === squares[b].value && squares[a].value === squares[c].value) {
+      return { player: squares[a].value, winningRow: lines[i] };
     }
   }
   return null;
