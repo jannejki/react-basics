@@ -32,11 +32,15 @@ class Game extends React.Component {
     const current = history[history.length - 1];
     const squares = current.squares.slice();
 
+<<<<<<< HEAD
     if (_calculateWinner(squares)) {
+=======
+    this.superSquare = _raffleSuperSquare();
+
+    if (_calculateWinner(squares) || squares[i]) {
+>>>>>>> parent of 8bec34a (game says "Tie!")
       this.superSquare = false;
       return;
-    } else {
-      this.superSquare = _raffleSuperSquare();
     }
 
 
@@ -65,7 +69,6 @@ class Game extends React.Component {
     const current = history[this.state.stepNumber];
     const winner = _calculateWinner(current.squares);
 
-    // create history buttons
     const moves = history.map((step, move) => {
       const desc = move ?
         'Go to move #' + move :
@@ -77,9 +80,9 @@ class Game extends React.Component {
       );
     });
 
-    // set game status
     let status;
     if (winner) {
+<<<<<<< HEAD
       status = 'Winner: ' + winner.player;
 
       for (let i of winner.winningRow) {
@@ -90,6 +93,11 @@ class Game extends React.Component {
       status = 'Next player: ' + (current.xIsNext ? 'X' : 'O');
     } else {
       status = 'Tie!'
+=======
+      status = "Winner: " + winner;
+    } else {
+      status = "Next player: " + (current.xIsNext ? "X" : "O");
+>>>>>>> parent of 8bec34a (game says "Tie!")
     }
 
     return (
