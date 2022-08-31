@@ -22,11 +22,12 @@ class Game extends React.Component {
     const current = history[history.length - 1];
     const squares = current.squares.slice();
 
-    this.superSquare = _raffleSuperSquare();
 
     if (_calculateWinner(squares) || squares[i]) {
       this.superSquare = false;
       return;
+    } else {
+      this.superSquare = _raffleSuperSquare();
     }
 
     squares[i] = current.xIsNext ? "X" : "O";
@@ -52,6 +53,7 @@ class Game extends React.Component {
     const current = history[this.state.stepNumber];
     const winner = _calculateWinner(current.squares);
 
+    // create history buttons
     const moves = history.map((step, move) => {
       const desc = move ?
         'Go to move #' + move :
@@ -63,11 +65,14 @@ class Game extends React.Component {
       );
     });
 
+    // set game status
     let status;
     if (winner) {
       status = "Winner: " + winner;
-    } else {
+    } else if (this.state.stepNumber < 9) {
       status = "Next player: " + (current.xIsNext ? "X" : "O");
+    } else {
+      status = "Tie!"
     }
 
     return (
