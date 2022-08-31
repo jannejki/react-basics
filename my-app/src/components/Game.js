@@ -8,7 +8,17 @@ class Game extends React.Component {
     this.state = {
       history: [
         {
-          squares: Array(9).fill(null),
+          squares: [
+            [''],
+            [''],
+            [''],
+            [''],
+            [''],
+            [''],
+            [''],
+            [''],
+            ['']
+          ],
           xIsNext: true
         }
       ],
@@ -22,24 +32,26 @@ class Game extends React.Component {
     const current = history[history.length - 1];
     const squares = current.squares.slice();
 
-
-    if (_calculateWinner(squares) || squares[i]) {
+    if (_calculateWinner(squares)) {
       this.superSquare = false;
       return;
     } else {
       this.superSquare = _raffleSuperSquare();
     }
 
-    squares[i] = current.xIsNext ? "X" : "O";
+
+    squares[i][0] = current.xIsNext ? 'X' : 'O';
+
+    const nextInLine = [{
+      squares: squares,
+      xIsNext: this.superSquare ? current.xIsNext : !current.xIsNext
+    }]
+
     this.setState({
-      history: history.concat([
-        {
-          squares: squares,
-          xIsNext: this.superSquare ? current.xIsNext : !current.xIsNext
-        }
-      ]),
+      history: this.state.history.concat(nextInLine),
       stepNumber: history.length,
     });
+
   }
 
   jumpTo(step) {
@@ -68,11 +80,16 @@ class Game extends React.Component {
     // set game status
     let status;
     if (winner) {
-      status = "Winner: " + winner;
+      status = 'Winner: ' + winner.player;
+
+      for (let i of winner.winningRow) {
+        current.squares[i][1] = 'winner';
+      }
+
     } else if (this.state.stepNumber < 9) {
-      status = "Next player: " + (current.xIsNext ? "X" : "O");
+      status = 'Next player: ' + (current.xIsNext ? 'X' : 'O');
     } else {
-      status = "Tie!"
+      status = 'Tie!'
     }
 
     return (
@@ -111,8 +128,8 @@ const _calculateWinner = (squares) => {
   ];
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+    if (squares[a][0] && squares[a][0] === squares[b][0] && squares[a][0] === squares[c][0]) {
+      return { player: squares[a][0], winningRow: lines[i] };
     }
   }
   return null;

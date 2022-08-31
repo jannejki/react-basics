@@ -73,3 +73,7 @@ ul {
 .game-info {
     margin-left: 0px;
 }
+
+.winner {
+    background:lightgreen;
+}
