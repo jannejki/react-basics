@@ -32,13 +32,9 @@ class Game extends React.Component {
     const current = history[history.length - 1];
     const squares = current.squares.slice();
 
-<<<<<<< HEAD
-    if (_calculateWinner(squares)) {
-=======
     this.superSquare = _raffleSuperSquare();
 
     if (_calculateWinner(squares) || squares[i]) {
->>>>>>> parent of 8bec34a (game says "Tie!")
       this.superSquare = false;
       return;
     }
@@ -82,22 +78,10 @@ class Game extends React.Component {
 
     let status;
     if (winner) {
-<<<<<<< HEAD
       status = 'Winner: ' + winner.player;
 
-      for (let i of winner.winningRow) {
-        current.squares[i].class = 'winner';
-      }
-
-    } else if (this.state.stepNumber < 9) {
-      status = 'Next player: ' + (current.xIsNext ? 'X' : 'O');
-    } else {
-      status = 'Tie!'
-=======
-      status = "Winner: " + winner;
     } else {
       status = "Next player: " + (current.xIsNext ? "X" : "O");
->>>>>>> parent of 8bec34a (game says "Tie!")
     }
 
     return (
