@@ -9,7 +9,7 @@ class Game extends React.Component {
       history: [
         {
           squares: Array(9).fill(null),
-          xIsNext: true
+          xIsNext: true,
         }
       ],
       stepNumber: 0,
@@ -22,14 +22,17 @@ class Game extends React.Component {
     const current = history[history.length - 1];
     const squares = current.squares.slice();
 
+    if (squares[i].value != '') return;
+
     this.superSquare = _raffleSuperSquare();
 
-    if (_calculateWinner(squares) || squares[i]) {
+    if (_calculateWinner(squares)) {
       this.superSquare = false;
       return;
     }
 
-    squares[i] = current.xIsNext ? "X" : "O";
+    squares[i] = { value: current.xIsNext ? "X" : "O", class: '' };
+
     this.setState({
       history: history.concat([
         {
@@ -66,9 +69,16 @@ class Game extends React.Component {
 
     let status;
     if (winner) {
-      status = "Winner: " + winner;
+      status = "Winner: " + winner.winner;
+
+      for (let index of winner.winningRow) {
+        current.squares[index].class = 'winner';
+      }
+
     } else if (this.state.stepNumber < 9) {
       status = "Next player: " + (current.xIsNext ? "X" : "O");
+    } else {
+      status = "Tie!";
     }
 
     return (
@@ -95,6 +105,13 @@ export default Game;
 
 /*===========================================================*/
 const _calculateWinner = (squares) => {
+
+  for (let i in squares) {
+    if (squares[i] === null) {
+      squares[i] = { value: '', class: '' };
+    }
+  }
+
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -107,8 +124,8 @@ const _calculateWinner = (squares) => {
   ];
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+    if (squares[a].value && squares[a].value === squares[b].value && squares[a].value === squares[c].value) {
+      return { winner: squares[a].value, winningRow: lines[i] };
     }
   }
   return null;
